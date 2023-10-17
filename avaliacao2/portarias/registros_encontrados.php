@@ -1,24 +1,28 @@
 <?php
 
     
+    if($_SERVER["REQUEST_METHOD"] == "GET"){
+         header("location: registros.php");
+   }
+
+    
     require_once('header.php');
     require_once('dados_banco.php');
     
+    $placa = $_POST['placa_id'];
+
     try {
         $dsn = "mysql:host=$servername;dbname=$dbname";
         $conn = new PDO($dsn, $username, $password);
         // set the PDO error mode to exception
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        $sql = "SELECT * FROM veiculos";
+        $sql = "SELECT * FROM registro WHERE '$placa'=veiculos_id";
     }catch(PDOException $e){
         echo $sql . "<br>" . $e->getMessage();
     }
     
     $stmt = $conn->query($sql);
-    while ($row = $stmt->fetch()) {
-        echo $row['firstName']. "  -  " .$row['lastName']."<br/>\n";
-    }
-    $conn->close();
+    $conn = NULL;
 ?>
  
 <!DOCTYPE html>
